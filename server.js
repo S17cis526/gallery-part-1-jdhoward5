@@ -5,7 +5,7 @@
  * This file defines the server for a
  * simple photo gallery web app.
  */
- 
+
 var http = require("http");
 var url = require("url");
 var fs = require("fs");
@@ -80,7 +80,7 @@ function serveImage(filename, req, res) {
 	    res.end("Yall 404'd - ain't nothin' here");
 	    return;
 	}
-	console.log("User opened "+filename+" at "+Date.now());
+	//console.log("User opened "+filename+" at "+Date.now());
 	res.setHeader("Content-Type", "image/jpeg");
 	res.end(body);
     });
@@ -120,11 +120,14 @@ var server = http.createServer((req, res) => {
 			fs.writeFile("config.json", JSON.stringify(config));
 		}
 	}
+  //QUERY STRUCTURE
     switch(urlParts.pathname) {
+      //CSS FILE
     case "/gallery.css":
 	res.setHeader("Content-Type", "text/css");
 	res.end(stylesheet);
 	break;
+  //ALL OTHER QUERIES
     case "/":
     case "/gallery":
     if(req.method == "GET"){
@@ -141,5 +144,11 @@ var server = http.createServer((req, res) => {
 
 server.listen(port, () => {
     console.log("Listening on Port "+port);
+    if(config)
+    {
+      console.log("Config File Loaded")
+    }
+    else{
+      console.error("No Config File Loaded -- FATAL");
+    }
 });
-
